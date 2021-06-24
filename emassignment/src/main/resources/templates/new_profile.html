@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Profile Management</title>
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+	<link href='https://fonts.googleapis.com/css?family=Bigshot One' rel='stylesheet'>
+	<link href='https://fonts.googleapis.com/css?family=Belgrano' rel='stylesheet'>
+	<link href='https://fonts.googleapis.com/css?family=Benne' rel='stylesheet'>
+</head>
+<body>
+	<div class="container" style="margin-top:10px;padding:10px;">
+		<h1 style="background:#b3ecff;padding:10px;text-align:center;font-family: 'Bigshot One';margin-top:5px;">Profile Management System</h1>
+		<hr>
+		<h2 style="background:#ffff99;padding:10px;text-align:center;font-family: 'Belgrano';width: fit-content;">Fill Details</h2>
+
+		<form action="#" th:action="@{/saveProfile}" th:object="${profile}" 
+			method="POST" enctype="multipart/form-data">
+			<input type="hidden" th:field="*{id}" />
+			<span style="font-family: 'Benne';font-size:20px;font-weight:bold;">Enter Name</span><br>
+			<input type="text" th:field="*{name}" placeholder="Name"class="form-control mb-4 col-4" required> 
+			<span style="font-family: 'Benne';font-size:20px;font-weight:bold;">Enter E-mail</span><br>
+			<input type="email" th:field="*{email}" placeholder="Email" class="form-control mb-4 col-4" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"required>
+			<span style="font-family: 'Benne';font-size:20px;font-weight:bold;">Enter Mobile</span><br>
+			<input type="text" th:field="*{mobile}" placeholder="Mobile" class="form-control mb-4 col-4" pattern="[0-9]{10}" required>
+
+<span style="font-family: 'Benne';font-size:20px;font-weight:bold;">Select State</span>
+<select required name="state" id="state" class="form-control mb-4 col-4" th:field="*{state}" >
+<option value="Andhra Pradesh">Andhra Pradesh</option>
+<option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
+<option value="Arunachal Pradesh">Arunachal Pradesh</option>
+<option value="Assam">Assam</option>
+<option value="Bihar">Bihar</option>
+<option value="Chandigarh">Chandigarh</option>
+<option value="Chhattisgarh">Chhattisgarh</option>
+<option value="Dadar and Nagar Haveli">Dadar and Nagar Haveli</option>
+<option value="Daman and Diu">Daman and Diu</option>
+<option value="Delhi">Delhi</option>
+<option value="Lakshadweep">Lakshadweep</option>
+<option value="Puducherry">Puducherry</option>
+<option value="Goa">Goa</option>
+<option value="Gujarat">Gujarat</option>
+<option value="Haryana">Haryana</option>
+<option value="Himachal Pradesh">Himachal Pradesh</option>
+<option value="Jammu and Kashmir">Jammu and Kashmir</option>
+<option value="Jharkhand">Jharkhand</option>
+<option value="Karnataka">Karnataka</option>
+<option value="Kerala">Kerala</option>
+<option value="Madhya Pradesh">Madhya Pradesh</option>
+<option value="Maharashtra">Maharashtra</option>
+<option value="Manipur">Manipur</option>
+<option value="Meghalaya">Meghalaya</option>
+<option value="Mizoram">Mizoram</option>
+<option value="Nagaland">Nagaland</option>
+<option value="Odisha">Odisha</option>
+<option value="Punjab">Punjab</option>
+<option value="Rajasthan">Rajasthan</option>
+<option value="Sikkim">Sikkim</option>
+<option value="Tamil Nadu">Tamil Nadu</option>
+<option value="Telangana">Telangana</option>
+<option value="Tripura">Tripura</option>
+<option value="Uttar Pradesh">Uttar Pradesh</option>
+<option value="Uttarakhand">Uttarakhand</option>
+<option value="West Bengal">West Bengal</option>
+</select>
+
+			<span style="font-family: 'Benne';font-size:20px;font-weight:bold;">Select Gender</span><br>
+			<input type="radio" id="male" value="male" name="gender" th:field="*{gender}" required>
+  			<label for="male">Male</label><br>
+  			<input type="radio" id="female" value="female" name= "gender" th:field="*{gender}" required>
+  			<label for="female">Female</label><br>
+  			<input type="radio" id="others" value="others" name="gender" th:field="*{gender}" required>
+  			<label for="others">Others</label><br>
+  			<input type="radio" id="not" value="prefer not to say" name= "gender" th:field="*{gender}" required>
+  			<label for="not">Prefer not to say</label><br>
+			
+			<p>
+    <label><span style="font-family: 'Benne';font-size:20px;font-weight:bold;">Select Skills:</span> <br>
+        <input type="checkbox" name="skills"
+            th:each="skill : ${skills}"
+            th:text="${skill.sname}" 
+            th:value="${skill.id}"
+            th:field="*{skills}"
+        />
+    </label>
+</p>
+
+
+	<div>
+
+    <label><span style="font-family: 'Benne';font-size:20px;font-weight:bold;">Select Profile Photo</span><br></label><br>
+    <input required type="file" name="image" accept="image/png, image/jpeg" />
+     <br>
+    </div>
+			<br>
+			<button type="submit" class="btn btn-info col-2">Save Profile</button>
+		</form>
+
+		<hr>
+	</div>
+</body>
+</html>
