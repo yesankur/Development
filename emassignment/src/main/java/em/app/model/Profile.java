@@ -1,6 +1,10 @@
 package em.app.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+
 import java.util.*;
 
 @Entity
@@ -10,18 +14,24 @@ public class Profile {
 	@GeneratedValue(strategy =  GenerationType.IDENTITY)
 	private long id;
 	
+	@NotBlank(message = "Name is mandatory")
 	@Column(name = "name")
 	private String name;
 	
+	@Email(message = "Emai-Id not valid")
 	@Column(name = "email")
 	private String email;
 	
+	@NotBlank
+	@Pattern(regexp="(^$|[0-9]{10})")
 	@Column(name = "mobile")
 	private String mobile;
 	
+	@NotBlank(message = "State is mandatory")
 	@Column(name = "state")
 	private String state;
 	
+	@NotBlank(message = "Gender is mandatory")
 	@Column(name = "gender")
 	private String gender;
 	

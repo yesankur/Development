@@ -1,6 +1,7 @@
 package em.app.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "skills")
@@ -8,6 +9,8 @@ public class Skills {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
+    @NotBlank(message = "Please Enter Atleast One Skill")
     private String sname;
  
      
