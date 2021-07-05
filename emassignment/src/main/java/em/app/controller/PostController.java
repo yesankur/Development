@@ -21,14 +21,16 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import em.app.dto.PostDto;
 import em.app.model.Post;
 import em.app.service.PostService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 
 @RestController
 @RequestMapping("/api/posts")
+@Api(value="Post-Custom", description="Custom Description")
 public class PostController {
 
 	@Autowired
@@ -40,14 +42,22 @@ public class PostController {
 		super();
 		this.postService = postService;
 	}
-
+//	@ApiResponses(value = {
+//	        @ApiResponse(code = 200, message = "Success", response = YourObject.class),
+//	        @ApiResponse(code = 401, message = "Unauthorized"),
+//	        @ApiResponse(code = 403, message="Forbidden"),
+//	        @ApiResponse(code = 404, message = "Not Found"),
+//	        @ApiResponse(code = 500, message = "Failure")
+//	})
+	@ApiOperation(value = "Get All Post-Custom")
 	@GetMapping
 	public List<PostDto> getAllPosts() {
 
 		return postService.getAllPosts().stream().map(post -> modelMapper.map(post, PostDto.class))
 				.collect(Collectors.toList());
 	}
-
+	
+	@ApiOperation(value = "Find Post-Custom")
 	@GetMapping("/{id}")
 	public ResponseEntity<PostDto> getPostById(@PathVariable(name = "id") Long id) {
 		Post post = postService.getPostById(id);
@@ -62,7 +72,8 @@ public class PostController {
 		}
 		
 	}
-
+	
+	@ApiOperation(value = "Create Post-Custom")
 	@PostMapping
 	public ResponseEntity<PostDto> createPost(@RequestBody PostDto postDto) {
 
@@ -79,6 +90,7 @@ public class PostController {
 
 	// change the request for DTO
 	// change the response for DTO
+	@ApiOperation(value = "Update Post-Custom")
 	@PutMapping("/{id}")
 	public ResponseEntity<PostDto> updatePost(@PathVariable long id, @RequestBody PostDto postDto) {
 
@@ -92,7 +104,7 @@ public class PostController {
 
 		return ResponseEntity.ok().body(postResponse);
 	}
-
+	 @ApiOperation(value = "Delete Post-Custom")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<HttpStatus> deletePost(@PathVariable(name = "id") Long id) {
 		postService.deletePost(id);
