@@ -22,6 +22,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		.anyRequest().authenticated()
 		.and().httpBasic()
 		.authenticationEntryPoint(authEntryPoint);
+        
+        http.headers().frameOptions().disable();
+        
     }
 //    
     @Autowired

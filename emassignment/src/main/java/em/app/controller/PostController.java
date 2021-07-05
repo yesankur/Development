@@ -96,7 +96,6 @@ public class PostController {
 	@DeleteMapping("/{id}")
 	public ResponseEntity<HttpStatus> deletePost(@PathVariable(name = "id") Long id) {
 		postService.deletePost(id);
-//		ApiResponse apiResponse = new ApiResponse(Boolean.TRUE, "Post deleted successfully", HttpStatus.OK);
 		return  new ResponseEntity<HttpStatus>(HttpStatus.NO_CONTENT);
 	}
 	@PostMapping("/logout")
