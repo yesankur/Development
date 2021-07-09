@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import em.app.dto.PostDto;
 import em.app.model.Post;
@@ -51,9 +52,13 @@ public class PostController {
 //	})
 	@ApiOperation(value = "Get All Post-Custom")
 	@GetMapping
-	public List<PostDto> getAllPosts() {
+	public List<PostDto> getAllPosts(
+			@RequestParam(defaultValue = "0") Integer pageNo,
+            @RequestParam(defaultValue = "10") Integer pageSize,
+            @RequestParam(defaultValue = "id") String sortBy) 
+	{
 
-		return postService.getAllPosts().stream().map(post -> modelMapper.map(post, PostDto.class))
+		return postService.getAllPosts(pageNo, pageSize, sortBy).stream().map(post -> modelMapper.map(post, PostDto.class))
 				.collect(Collectors.toList());
 	}
 	

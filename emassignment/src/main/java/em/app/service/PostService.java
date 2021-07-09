@@ -7,7 +7,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import em.app.model.Post;
 
 public interface PostService {
-	List<Post> getAllPosts();
+	List<Post> getAllPosts(Integer pageNo, Integer pageSize, String sortBy);
 
 	Post createPost(Post post);
 
