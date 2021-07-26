@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>All Posts</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+</head>
+
+<body>
+    <div class="container my-2">
+    <div class="card">
+    <div class="card-body">
+        <div th:switch="${posts}" class="container my-5">
+           <!--  <p class="my-5">
+                <a href="/edit" class="btn btn-primary">
+                <i class="fas fa-user-plus ml-2"> Add Employee </i></a>
+            </p> -->
+            <div class="col-md-10">
+                <h2 th:case="null">No record found !!</h2>
+                <div th:case="*">
+                    <table class="table table-striped table-responsive-md">
+                        <thead>
+                            <tr>
+                                <th>Content</th>
+                                <th>Description</th>
+                                <th>Title</th>
+                                <!-- <th>Edit</th>
+                                <th>Delete</th> -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="post : ${posts}">
+                                <td th:text="${post.content}"></td>
+                                <td th:text="${post.description}"></td>
+                                <td th:text="${post.title}"></td>
+                            
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <div>
+    </div>
+                </div>
+						<b>Total pages:</b> &nbsp [[${totalPages}]]
+						<b>Current page:</b> &nbsp [[${currentPage}]]
+						
+						<div class="col-sm-5">
+            <span th:each="i: ${#numbers.sequence(1, totalPages)}">
+      <a th:if="${currentPage != i}" th:href="@{'/api/posts/ui' + '?pageNo=' + ${i}}">[[${i}]]</a>
+      <span th:unless="${currentPage != i}">[[${i}]]</span> &nbsp; &nbsp;
+            </span>
+        </div>
+						<div class="col-sm-5">
+						<a th:if="${currentPage >= 0}"  th:href="@{'/api/posts/ui' + '?pageNo='+ ${currentPage-1}}">Previous</a>
+
+            <a th:if="${currentPage < totalPages}" th:href="@{'/api/posts/ui' + '?pageNo='+ ${currentPage + 1}}">Next</a>
+            <span th:unless="${currentPage < totalPages}">Next</span>
+        </div>
+					</div>
+        </div>
+    </div>
+    </div>
+    </div>
+</body>
+
+</html>

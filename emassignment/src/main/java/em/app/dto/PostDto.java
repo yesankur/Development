@@ -1,12 +1,17 @@
 package em.app.dto;
 
+import javax.validation.constraints.NotBlank;
+
+import em.app.validation.ValidContent;
 import lombok.Data;
 
 @Data
 public class PostDto {
 	private long id;
+	@NotBlank(message = "Can not be Blank")
 	private String title;
 	private String description;
+	@ValidContent(message = "Atleast one number and charavter required")
 	private String content;
 	public long getId() {
 		return id;

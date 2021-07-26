@@ -5,14 +5,20 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+import javax.validation.Valid;
+import org.springframework.data.domain.Pageable;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,23 +27,29 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import em.app.dto.PostDto;
 import em.app.model.Post;
+import em.app.repository.PostRepository;
 import em.app.service.PostService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 
-@RestController
+@Controller
 @RequestMapping("/api/posts")
 @Api(value="Post-Custom", description="Custom Description")
 public class PostController {
 
 	@Autowired
 	private ModelMapper modelMapper;
+	
+	@Autowired
+    PostRepository repository;
 
-	private PostService postService;
+	@Autowired
+	PostService postService;
 
 	public PostController(PostService postService) {
 		super();
@@ -50,8 +62,29 @@ public class PostController {
 //	        @ApiResponse(code = 404, message = "Not Found"),
 //	        @ApiResponse(code = 500, message = "Failure")
 //	})
+	@GetMapping("/ui")
+	public String getAll(
+			@RequestParam(defaultValue = "0") Integer pageNo,
+            @RequestParam(defaultValue = "4") Integer pageSize,
+            @RequestParam(defaultValue = "id") String sortBy,
+            Model model) 
+	{
+
+		/*
+		 * return postService.getAllPosts(pageNo, pageSize, sortBy).stream().map(post ->
+		 * modelMapper.map(post, PostDto.class)) .collect(Collectors.toList());
+		 */
+		List<Post> list= postService.getAllPosts(pageNo, pageSize, sortBy);
+		model.addAttribute("posts",list);
+		Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).ascending());
+		
+		Page<Post> pagedResult = repository.findAll(paging);
+        model.addAttribute("totalPages", pagedResult.getTotalPages());
+        model.addAttribute("currentPage", pageNo);
+		return "postlist";
+	}
 	@ApiOperation(value = "Get All Post-Custom")
-	@GetMapping
+	@ResponseBody@GetMapping
 	public List<PostDto> getAllPosts(
 			@RequestParam(defaultValue = "0") Integer pageNo,
             @RequestParam(defaultValue = "10") Integer pageSize,
@@ -80,7 +113,7 @@ public class PostController {
 	
 	@ApiOperation(value = "Create Post-Custom")
 	@PostMapping
-	public ResponseEntity<PostDto> createPost(@RequestBody PostDto postDto) {
+	public ResponseEntity<PostDto> createPost(@ Valid @RequestBody PostDto postDto) {
 
 		// convert DTO to entity
 		Post postRequest = modelMapper.map(postDto, Post.class);
